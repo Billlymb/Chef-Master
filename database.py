@@ -10,10 +10,7 @@ class DatabaseManager:
         self.init_schema()
 
     def _get_connection(self) -> sqlite3.Connection:
-        """
-        Creates and returns a connection to SQLite database.
-        Row factory enables column-name access for clean data parsing.
-        """
+        """Creates and returns a connection to the SQLite database with row factory."""
         conn = sqlite3.connect(self.db_path)
         conn.row_factory = sqlite3.Row
         return conn
@@ -33,10 +30,7 @@ class DatabaseManager:
             conn.commit()
 
     def add_recipe(self, name: str, prep_time: str) -> bool:
-        """
-        Inserts a new recipe record.
-        Uses parameterized queries (? placeholders) to prevent SQL Injection vulnerabilities.
-        """
+        """Inserts a new recipe record using parameterized queries."""
         try:
             with self._get_connection() as conn:
                 cursor = conn.cursor()
@@ -54,10 +48,7 @@ class DatabaseManager:
             return False
 
     def get_all_recipes(self) -> List[Tuple[str, str]]:
-        """
-        Retrieves all stored recipes ordered by latest creation.
-        Why Tuples? Returns immutable data structures to maintain state integrity in the GUI.
-        """
+        """Retrieves all stored recipes ordered by latest creation."""
         try:
             with self._get_connection() as conn:
                 cursor = conn.cursor()
